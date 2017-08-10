@@ -18,7 +18,8 @@
 		<oracle.ojdbc.version>12.1.0.1</oracle.ojdbc.version>
 		<javax.ejb.version>3.2</javax.ejb.version>
 		<wildfly.deploy.version>1.1.0.Alpha5</wildfly.deploy.version>
-		<javax.servlet.api.version>3.1.0</javax.servlet.api.version>	
+		<javax.servlet.api.version>3.1.0</javax.servlet.api.version>
+		<junit.version>4.12</junit.version>	
 	</properties>
 	<build>
 		<plugins>
@@ -72,5 +73,17 @@
 			<version>${javax.servlet.api.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- dependency test service -->
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-client</artifactId>
+			<version>${resteasy.jaxrs.version}</version>
+		</dependency>		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+		</dependency>
+		<!-- end dependency test service -->
 	</dependencies>
 </project>
