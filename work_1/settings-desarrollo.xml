@@ -47,18 +47,7 @@
 			</activation>
 			<properties>
 				<deploy.hostname>localhost</deploy.hostname>
-				<deploy.port>9997</deploy.port>
-				<deploy.username>admin</deploy.username>
-				<deploy.password>welcome1*</deploy.password>
-				<deploy.skip>false</deploy.skip>
-				<deploy.version>1.0</deploy.version>
-			</properties>
-		</profile>
-		<profile>
-			<id>tfc-remote</id>			
-			<properties>
-				<deploy.hostname>localhost</deploy.hostname>
-				<deploy.port>9990</deploy.port>
+				<deploy.port>10190</deploy.port>
 				<deploy.username>admin</deploy.username>
 				<deploy.password>admin</deploy.password>
 				<deploy.skip>false</deploy.skip>
