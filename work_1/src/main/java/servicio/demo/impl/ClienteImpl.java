@@ -1,7 +1,10 @@
 package servicio.demo.impl;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+import servicio.demo.helper.ServicioHelper;
 import servicio.demo.output.Cliente;
 
 public class ClienteImpl {
@@ -19,13 +22,15 @@ public class ClienteImpl {
 	}
 
 	public Cliente obtenerCliente(String dni) {
-		// TODO Implementacion obtenerCliente clientes
-		return null;
+		return ServicioHelper.clientes.stream().filter(c -> dni.trim().equals(c.getDni())).findAny().orElse(null);
 	}
 	
 	public List<Cliente> listarClientes(String value) {
-		// TODO Implementacion listarClientes clientes
-		return null;
+		return (Optional.ofNullable(value).isPresent()) ? ServicioHelper.clientes.stream()
+				.filter(c -> c.getNombres().toLowerCase().contains(value.toLowerCase())
+						|| c.getApellidoPaterno().toLowerCase().contains(value.toLowerCase())
+						|| c.getApellidoMaterno().toLowerCase().contains(value.toLowerCase()))
+				.collect(Collectors.toList()) : ServicioHelper.clientes ;
 	}
 
 }

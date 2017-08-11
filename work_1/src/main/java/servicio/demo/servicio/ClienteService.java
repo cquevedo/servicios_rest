@@ -1,5 +1,8 @@
 package servicio.demo.servicio;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -10,10 +13,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import servicio.demo.impl.ClienteImpl;
 import servicio.demo.output.Cliente;
 
 @Path("/")
@@ -28,14 +35,25 @@ public class ClienteService {
 	@Path("/clientes")
 	public Response clientes(@QueryParam("q") final String q) {
 		LOG.debug("[clientes][q->{}]",new Object[]{q} );
-		return Response.ok(null).build();				
+		ClienteImpl clienteImp = new ClienteImpl();
+		List<Cliente> clientes = clienteImp.listarClientes(q);
+		if( !Optional.ofNullable(clientes).isPresent() || clientes.isEmpty()){
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		GenericEntity<List<Cliente>> entity = new GenericEntity<List<Cliente>>(clientes){};
+		return Response.ok(entity).build();				
 	}
 
 	@GET
 	@Path("/cliente/{dni}")
 	public Response obtenerCliente(@PathParam("dni") final String dni) {
 		LOG.debug("[obtenerCliente][dni->{}]",new Object[]{dni} );
-		return Response.ok(null).build();
+		ClienteImpl clienteImp = new ClienteImpl();
+		Cliente cliente = clienteImp.obtenerCliente(dni);
+		if( !Optional.ofNullable(cliente).isPresent()){
+			return Response.status(Status.NOT_FOUND).build();
+		}		
+		return Response.ok(cliente).build();
 	}
 
 	@POST
