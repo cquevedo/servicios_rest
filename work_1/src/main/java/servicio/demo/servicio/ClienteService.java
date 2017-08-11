@@ -17,11 +17,14 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import servicio.demo.impl.ClienteImpl;
+import servicio.demo.impl.ClienteImplException;
 import servicio.demo.output.Cliente;
+import servicio.demo.output.Error;
 
 @Path("/")
 @Produces({ "application/json" })
@@ -29,6 +32,7 @@ import servicio.demo.output.Cliente;
 @RolesAllowed("restuser")
 public class ClienteService {
 	
+	private static final String ERROR_SISTEMA = "1";
 	private static final Logger LOG = LoggerFactory.getLogger(ClienteService.class);
 	
 	@GET
@@ -60,7 +64,19 @@ public class ClienteService {
 	@Path("/cliente")
 	public Response registrarCliente(final Cliente cliente) {
 		LOG.debug("[registrarCliente][cliente->{}]",new Object[]{cliente} );
-		return Response.ok(null).build();
+		ClienteImpl clienteImp = new ClienteImpl();
+		try {
+			clienteImp.registrarCliente(cliente);
+			return Response.status(Status.CREATED).build();
+		} catch (ClienteImplException e) {
+			LOG.info(e.getMessage(),e);
+			Error error = new Error(e.getCodigoError(),e.getMessage());
+			return Response.status(Status.BAD_REQUEST).entity(error).build();
+		} catch (Exception e) {
+			LOG.error(e.getMessage(),e);
+			Error error = new Error(ERROR_SISTEMA,e.getMessage());
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(error).build();
+		}		
 	}
 
 	@PUT

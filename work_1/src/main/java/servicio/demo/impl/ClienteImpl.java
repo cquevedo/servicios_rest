@@ -9,8 +9,13 @@ import servicio.demo.output.Cliente;
 
 public class ClienteImpl {
 
-	public void registrarCliente() {
-		// TODO Implementacion registrar cliente
+	public void registrarCliente(Cliente cliente) throws ClienteImplException {		
+		if(!Optional.ofNullable(cliente).isPresent()){
+			throw new ClienteImplException("B10000", "Cliente requerido.");
+		}
+		if(Optional.ofNullable(this.obtenerCliente(cliente.getDni())).isPresent()){
+			throw new ClienteImplException("B10001", "Cliente ya registrado.");
+		}
 	}
 
 	public void actualizarCliente() {

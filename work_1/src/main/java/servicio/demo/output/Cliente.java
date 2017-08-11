@@ -10,6 +10,10 @@ public class Cliente {
 	private String direccion;
 	private String telefono;
 	
+	public Cliente(){
+		super();
+	}
+	
 	public Cliente(String dni, String nombres, String apellidoPaterno, String apellidoMaterno, String ruc,
 			String direccion, String telefono) {
 		super();
