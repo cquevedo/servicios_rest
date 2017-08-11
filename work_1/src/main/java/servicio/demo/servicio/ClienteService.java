@@ -83,14 +83,38 @@ public class ClienteService {
 	@Path("/cliente/{dni}")
 	public Response actualizarCliente(@PathParam("dni") final String dni, final Cliente cliente) {
 		LOG.debug("[actualizarCliente][dni->{}][cliente->{}]",new Object[]{dni,cliente} );
-		return Response.ok(null).build();
+		ClienteImpl clienteImp = new ClienteImpl();
+		try {
+			clienteImp.actualizarCliente(dni, cliente);
+			return Response.status(Status.OK).build();
+		} catch (ClienteImplException e) {
+			LOG.info(e.getMessage(),e);
+			Error error = new Error(e.getCodigoError(),e.getMessage());
+			return Response.status(Status.BAD_REQUEST).entity(error).build();
+		} catch (Exception e) {
+			LOG.error(e.getMessage(),e);
+			Error error = new Error(ERROR_SISTEMA,e.getMessage());
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(error).build();
+		}
 	}
 
 	@DELETE
 	@Path("/cliente/{dni}")
 	public Response eliminarCliente(@PathParam("dni") final String dni) {
 		LOG.debug("[actualizarCliente][dni->{}]",new Object[]{dni} );
-		return Response.ok(null).build();
+		ClienteImpl clienteImp = new ClienteImpl();
+		try {
+			clienteImp.eliminarCliente(dni);
+			return Response.status(Status.OK).build();
+		} catch (ClienteImplException e) {
+			LOG.info(e.getMessage(),e);
+			Error error = new Error(e.getCodigoError(),e.getMessage());
+			return Response.status(Status.BAD_REQUEST).entity(error).build();
+		} catch (Exception e) {
+			LOG.error(e.getMessage(),e);
+			Error error = new Error(ERROR_SISTEMA,e.getMessage());
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(error).build();
+		}
 	}
 
 }

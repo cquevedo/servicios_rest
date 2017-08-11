@@ -18,12 +18,19 @@ public class ClienteImpl {
 		}
 	}
 
-	public void actualizarCliente() {
-		// TODO Implementacion actualizar cliente
+	public void actualizarCliente(String dni,Cliente cliente) throws ClienteImplException {
+		if(!Optional.ofNullable(cliente).isPresent()){
+			throw new ClienteImplException("B10000", "Cliente requerido.");
+		}
+		if(!Optional.ofNullable(this.obtenerCliente(dni)).isPresent()){
+			throw new ClienteImplException("B10003", "Cliente no encontrado.");
+		}
 	}
 
-	public void eliminarCliente() {
-		// TODO Implementacion eliminar cliente
+	public void eliminarCliente(String dni) throws ClienteImplException {		
+		if(!Optional.ofNullable(this.obtenerCliente(dni)).isPresent()){
+			throw new ClienteImplException("B10003", "Cliente no encontrado.");
+		}
 	}
 
 	public Cliente obtenerCliente(String dni) {
